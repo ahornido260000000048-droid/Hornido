@@ -1,0 +1,43 @@
+/*Base Reset*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/*Base Styles*/
+body {
+    background-color: #f4f6f8;
+    color: #1a1a1a;
+    line-height: 1.6;
+    padding: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/*Dynamic State Class (Toggled via JavaScript)*/
+body.dark-mode{
+    background-color: #121212;
+    color: #f4f6f8;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ddd;
+}
+
+button{ 
+    padding: 0.6rem 1.2rem;
+    background-color: #0066cc;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #004b99;
+}
