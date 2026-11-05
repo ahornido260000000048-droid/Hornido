@@ -82,9 +82,7 @@ h2{font-size:clamp(1.9rem,4.2vw,3rem);font-weight:800;letter-spacing:-.04em}
 blockquote.note{margin-top:10px;padding:38px}blockquote footer{margin-top:20px}blockquote em{font-size:.85rem;color:var(--wine)}
 
 /* drag */
-.drag{cursor:grab;touch-action:pan-y;user-select:none;rotate:var(--r,0deg);transition:box-shadow .2s}
-.drag.dragging{cursor:grabbing;z-index:20;box-shadow:0 22px 40px rgba(0,0,0,.5);transition:none}
-.drag img{pointer-events:none}
+.drag{rotate:var(--r,0deg)}
 
 .foot{background:var(--deep);color:var(--beige);text-align:center;padding:26px;font-size:.85rem;position:relative}.top{position:absolute;right:20px;top:14px;width:38px;height:38px;border-radius:50%;background:var(--tan);color:var(--maroon);display:grid;place-items:center;font-weight:700}
 
@@ -157,3 +155,26 @@ h1{text-transform:none;font-size:clamp(2.3rem,5.6vw,4.2rem);line-height:1.02}
 
 @media(max-width:640px){.lace-side{width:34px;background-size:34px 34px}.wrap::before{width:150px;height:150px}.hero-art::before{width:260px;height:260px;left:10%}}
 @media(prefers-reduced-motion:reduce){.wrap::before,.hero-art::before{animation:none}}
+
+/* ===== DENIM / JEANS DESIGNS ===== */
+:root{--denim:#35557f;--denim2:#2a4569;--stitch:#e9c46a}
+.denim-strip,.denim-patch,.chip:nth-child(even),.contact:nth-child(odd){
+ background:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 2px,transparent 2px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.12) 0 1px,transparent 1px 3px),linear-gradient(var(--denim),var(--denim2));color:#f6ead2}
+.denim-strip{height:46px;position:relative;z-index:3;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.denim-strip::before,.denim-strip::after{content:"";position:absolute;left:0;right:0;border-top:2.5px dashed var(--stitch)}
+.denim-strip::before{top:8px}.denim-strip::after{bottom:8px}
+.denim-strip{background-image:radial-gradient(circle at 50% 50%,#c9a24a 0 5px,#8a6a22 6px 7px,transparent 8px),repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 2px,transparent 2px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.12) 0 1px,transparent 1px 3px),linear-gradient(var(--denim),var(--denim2));background-size:120px 46px,auto,auto,auto}
+.denim-patch{position:absolute;inset:-16px -22px -16px 26px;rotate:2.5deg;border-radius:6px;outline:2.5px dashed var(--stitch);outline-offset:-9px;box-shadow:var(--sh);z-index:0}
+.denim-patch::after{content:"";position:absolute;right:-6px;bottom:-6px;width:60px;height:14px;background:repeating-linear-gradient(90deg,#d8c9a8 0 2px,transparent 2px 4px);opacity:.7}
+.chip:nth-child(even),.contact:nth-child(odd){outline:2px dashed var(--stitch);outline-offset:-8px;border-left-color:var(--stitch);border-color:#233a5a}
+.contact:nth-child(odd):hover{background-color:var(--denim)}
+.contact:nth-child(odd) b,.chip:nth-child(even) .script-h{color:#f2d58a}
+.contact:nth-child(odd)::before{background:var(--denim2);color:var(--stitch);border:1px solid var(--stitch)}
+
+/* denim pocket in the intro */
+.pocket{position:absolute;right:-4px;bottom:-6px;width:220px;height:187px;z-index:0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45));rotate:var(--r)}
+.pocket svg{width:100%;height:100%}
+.pocket .script{position:absolute;left:0;right:0;top:52px;text-align:center;font-size:1.7rem;line-height:1.05;color:#f6ead2}
+.rivet{position:absolute;left:50%;top:150px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#c9a24a 60%,#8a6a22)}
+.id{z-index:1}
+@media(max-width:640px){.pocket{width:170px;height:145px}.pocket .script{font-size:1.3rem;top:40px}.rivet{top:118px}.denim-patch{inset:-12px -8px -12px 14px}}
