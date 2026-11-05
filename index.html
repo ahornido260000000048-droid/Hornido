@@ -1,51 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student E-Portfolio</title>
-
-  <!-- Connection 1: External CSS Link -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Connection 2: External JavaScript Link -->
-  <script src="script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Personal web portfolio of Abbie Marthena Hornido, a First Year Information Technology student.">
+<title>Abbie Marthena Hornido | Personal Web Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header class="nav">
+  <a href="#home" class="logo">abbie<span>.</span></a>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+  <nav id="menu">
+    <a href="#about">About</a><a href="#education">Education</a><a href="#achievements">Achievements</a>
+    <a href="#seminars">Seminars</a><a href="#activities">Activities</a><a href="#reflection">Reflection</a><a href="#contact">Contact</a>
+  </nav>
+</header>
 
-  <header>
-    <nav>
-      <h2>Hornido, Abbie Marthena E.</h2>
-      <!-- Dynamic Target 1: Dark Mode Toggle -->
-      <button id="theme-btn">Toggle Dark Mode</button>
-    </nav>
-  </header>
+<!-- 1 · PERSONAL WEB PORTFOLIO -->
+<section id="home" class="page maroon hero">
+  <div class="lace-side l"></div><div class="lace-side r"></div>
+  <div class="hero-text pop">
+    <span class="eyebrow">Personal Web Portfolio</span>
+    <h1>Learn something about this student and her works!</h1>
+    <p>Hi, I’m <strong>Abbie Marthena Hornido</strong> — a First Year Information Technology student learning to turn ideas into functional digital experiences.</p>
+    <div class="btns"><a class="btn" href="#about">About me</a><a class="btn ghost" href="#activities">Explore my work</a></div>
+    <p class="hint">✦ Tip: drag the scrapbook pieces around!</p>
+  </div>
 
-  <main>
-    <section id="hero">
-      <h1>Welcome to My E-Portfolio</h1>
-      <p>1st Year Information Technology Student</p>
-    </section>
-
-    <section id="projects">
-      <h2>Featured Projects</h2>
-      <div class="card">
-        <h3>Web Integration Lab</h3>
-        <p>A demonstration of linking HTML, CSS, and JS.</p>
+  <div class="hero-art">
+    <div class="lace-frame drag" style="--r:-4deg">
+      <div class="paper-in">
+        <span class="mini">Student Portfolio</span>
+        <span class="script">Abbie<br>Hornido</span>
+        <span class="mini">Bachelor of Science in<br>Information Technology</span>
       </div>
-    </section>
+    </div>
+    <svg class="heart drag" viewBox="0 0 64 64" aria-hidden="true" style="--r:8deg"><circle cx="32" cy="9" r="7" fill="none" stroke="#c9a24a" stroke-width="3"/><path d="M32 58 8 34C-1 24 8 10 20 14c5 2 8 6 12 11 4-5 7-9 12-11 12-4 21 10 12 20z" fill="#d6b25a" stroke="#a8812f" stroke-width="2"/></svg>
+    <div class="id drag" style="--r:3deg">
+      <div class="bow"><i></i><b></b><i></i></div>
+      <div class="clip"></div>
+      <img src="https://drive.google.com/thumbnail?id=1Al5Eb2y4zZoIfBRF6BkgLzJwQZ9S-OJI&sz=w800" alt="Abbie Marthena Hornido" onerror="this.onerror=null;this.src='assets/photo.jpg'">
+      <div class="idtext"><b>Student Portfolio</b>Abbie Marthena Hornido<small>BS Information Technology</small></div>
+    </div>
+  </div>
+</section>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <!-- Dynamic Target 2: Interactive Alert Button -->
-      <button id="contact-btn">Get in Touch</button>
-    </section>
-  </main>
+<!-- 2 · A LITTLE ABOUT ME -->
+<section id="about" class="page checker">
+  <div class="wrap">
+    <div class="split">
+      <div class="folder drag pop" style="--r:-3deg">
+        <span class="eyebrow dark">A little about me</span>
+        <h2>Learning from others, building my own path.</h2>
+        <p class="small">A curious mind exploring technology, discovering creativity, and turning inspiration into new skills.</p>
+        <span class="tape"></span>
+      </div>
+      <div class="stack">
+        <article class="note pop"><h3 class="script-h">Who I Am</h3>
+          <p>Hi! I'm Abbie Marthena Hornido, an aspiring IT professional who is eager to learn and explore the world of technology. My interest in technology grew from being surrounded by older generations who inspired me to understand how things work and how technology can make everyday life easier. Although I am still learning, I enjoy discovering new skills, trying creative ideas, and challenging myself to improve. I believe that learning takes time, and every small step brings me closer to becoming the person I want to be.</p></article>
+        <article class="note maroon-card pop"><h3 class="script-h">My Career Goal</h3>
+          <p>Become a skilled IT professional who combines technology, creativity, and continuous learning to create meaningful digital experiences.</p></article>
+        <article class="note maroon-card pop"><h3 class="script-h">My Interest</h3>
+          <ul class="list"><li>🎨 Working with Canva and creating designs</li><li>💻 Learning how to build websites</li><li>&lt;/&gt; Learning coding in simple but understandable ways</li><li>✨ Exploring the creative industry</li><li>🚀 Discovering new technologies and digital skills</li></ul></article>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <!-- Dynamic Target 3: Year Injection -->
-    <p>&copy; <span id="year"></span> All Rights Reserved.</p>
-  </footer>
+<!-- 3 · EDUCATION -->
+<section id="education" class="page maroon">
+  <div class="lace-side l"></div><div class="lace-side r"></div>
+  <div class="wrap narrow">
+    <div class="notebook pop"><span class="spiral"></span>
+      <h2 class="stitle">educational<br>background</h2>
+      <ul class="timeline">
+        <li class="now"><span>2026 – Present</span><b>University of Immaculate Conception</b><em>Current education</em></li>
+        <li><span>2024 – 2025</span><b>University of Immaculate Conception</b></li>
+        <li><span>2020 – 2024</span><b>Davao City National High School</b></li>
+        <li><span>2014 – 2019</span><b>Kapitan Tomas Monteverde Sr. Central Elementary School</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
+<!-- 4 · ACHIEVEMENTS -->
+<section id="achievements" class="page checker">
+  <div class="wrap">
+    <h2 class="stitle dark center pop">achievements</h2>
+    <div class="grid three">
+      <article class="card maroon-card drag pop" style="--r:-1.5deg"><h3 class="script-h">Elementary</h3><ul class="list"><li>Consistent With High Honor Student</li><li>Indak-Indak Placer</li><li>Dedicated Volleyball Player</li><li>2nd Placer – Swimming Women</li><li>Leadership Award – Regional Camper</li></ul></article>
+      <article class="card maroon-card drag pop" style="--r:1deg"><h3 class="script-h">High School</h3><ul class="list"><li>Consistent With High Honor Student</li><li>Best in Choreography</li><li>Dedicated SPA Dance Student Awardee</li></ul></article>
+      <article class="card maroon-card drag pop" style="--r:-1deg"><h3 class="script-h">Senior High School</h3><ul class="list"><li>Consistent Honor Student</li><li>Dedicated Halaw Masinayaw Student Awardee</li><li>Best in Research</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · SEMINARS -->
+<section id="seminars" class="page maroon">
+  <div class="lace-side l"></div><div class="lace-side r"></div>
+  <div class="wrap">
+    <h2 class="stitle center pop">seminar &amp; trainings<br><span class="script">attended</span></h2>
+    <div class="grid three">
+      <article class="card paper drag pop" style="--r:-2deg"><h3 class="script-h">Elementary</h3><p class="lbl">Sports Trainings</p><ul class="list"><li>Taekwondo</li><li>Swimming</li><li>Volleyball</li><li>Mother Majorette</li><li>Ukelele</li><li>Dancing</li></ul><p class="lbl">Supreme Pupil Government (SPG) Seminars</p></article>
+      <article class="card paper drag pop" style="--r:1.5deg"><h3 class="script-h">High School</h3><p class="lbl">Dance Trainings</p><ul class="list"><li>Competition Trainings</li><li>Recital Practices</li></ul></article>
+      <article class="card paper drag pop" style="--r:-1deg"><h3 class="script-h">Senior High School</h3><p class="lbl">Dance Trainings</p><ul class="list"><li>Competition Trainings</li></ul><p class="lbl">Cheer-dance Training</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · COURSE ACTIVITIES -->
+<section id="activities" class="page checker">
+  <div class="wrap">
+    <div class="split">
+      <div class="folder dark-folder drag pop" style="--r:2deg">
+        <h2 class="stitle">course<br>activities</h2>
+        <p class="small light">Subjects and activities where I learn and practice technical and creative skills.</p>
+        <span class="button-pin"></span>
+      </div>
+      <div class="chips">
+        <div class="chip drag pop"><span class="script-h">HTML / CSS</span><small>Activities</small></div>
+        <div class="chip drag pop"><span class="script-h">Java</span><small>Programming</small></div>
+        <div class="chip drag pop"><span class="script-h">Python</span><small>Fundamentals</small></div>
+        <div class="chip drag pop"><span class="script-h">Canva</span><small>Activities</small></div>
+        <div class="chip drag pop"><span class="script-h">Figma</span><small>Layouts</small></div>
+        <div class="chip drag pop"><span class="script-h">Microsoft Excel</span><small>Activities</small></div>
+        <div class="chip drag pop"><span class="script-h">Emerging Computing</span><small>Technologies</small></div>
+        <div class="chip drag pop"><span class="script-h">Academic Research</span><small>Activities</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · REFLECTION -->
+<section id="reflection" class="page maroon">
+  <div class="lace-side l"></div><div class="lace-side r"></div>
+  <div class="wrap narrow">
+    <h2 class="stitle center pop">looking back,<br>growing ahead</h2>
+    <p class="center script big">A journey of learning</p>
+    <p class="center lead">Every experience teaches me something new, and every challenge helps me grow.</p>
+    <blockquote class="note pop">
+      <p>Creating this portfolio gives me a chance to look back on my experiences, recognize what I have learned, and appreciate how far I have come. My interest in technology was inspired by the older generations around me, encouraging me to explore things beyond what I already know. As an IT student, I know that I still have a lot to discover, especially in coding, web development, and creative design. I may not understand everything right away, but I am willing to learn, make mistakes, and improve along the way. For me, growth is not about knowing everything; it is about having the courage to keep learning.</p>
+      <footer><span class="script-h">Abbie Marthena Hornido</span><br><em>My journey, my progress.</em></footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- 8 · CONTACT -->
+<section id="contact" class="page checker">
+  <div class="wrap narrow center">
+    <h2 class="stitle dark pop">have a project in mind?<br><span class="script">contact me!</span></h2>
+    <div class="grid two">
+      <a class="card maroon-card contact drag pop" href="tel:09957628765" style="--r:-1deg"><b>Contact no.</b><span>09957628765</span></a>
+      <a class="card maroon-card contact drag pop" href="https://www.facebook.com/share/19mSTAAuPT/?mibextid=wwXIfr" target="_blank" rel="noopener" style="--r:1deg"><b>Facebook</b><span>Abbie E. Hornido</span></a>
+      <a class="card maroon-card contact drag pop" href="https://www.instagram.com/acdhahwhaia?rpxt=cjE3amlkdTl4Mmdy&utm_source=qr" target="_blank" rel="noopener" style="--r:1deg"><b>Instagram</b><span>Acdhahwhaja</span></a>
+      <a class="card maroon-card contact drag pop" href="mailto:ahornido_260000000048@uic.edu.ph" style="--r:-1deg"><b>Email</b><span>ahornido_260000000048@uic.edu.ph</span></a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot"><p>© <span id="year">2026</span> Abbie Marthena Hornido · Designed with curiosity</p><a class="top" href="#home" aria-label="Back to top">↑</a></footer>
+<script src="script.js"></script>
 </body>
 </html>
