@@ -126,3 +126,22 @@ button.pill{animation:none}
 }
 @media(max-height:520px) and (orientation:landscape){.zone{--h:520px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== PHOTOS MAGNETED TO THE FRIDGE DOOR ===== */
+.scene{grid-template-columns:1fr;max-width:900px;justify-items:center}
+.dp{position:absolute;width:32%;background:#fff;padding:2.6cqw 2.6cqw 1.2cqw;rotate:var(--r);pointer-events:none;border:1px solid #e9dfc8;
+ box-shadow:0 1.2cqw 2.2cqw rgba(10,40,80,.45),0 0 0 .3cqw rgba(255,255,255,.4)}
+.dp img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--tan)}
+.dp figcaption{font-family:Caveat,cursive;font-size:6cqw;text-align:center;color:var(--denim);line-height:1.2;padding-top:.6cqw}
+.p1{left:5%;top:33%}.p2{left:40%;top:35%}.p3{left:6%;top:62%}.p4{left:41%;top:64%}
+.mag{position:absolute;top:-3.4cqw;left:50%;width:6.4cqw;height:6.4cqw;margin-left:-3.2cqw;border-radius:50%;z-index:2;
+ box-shadow:0 1cqw 1.4cqw rgba(0,0,0,.45),inset -.7cqw -.7cqw 1cqw rgba(0,0,0,.25),inset .6cqw .6cqw .9cqw rgba(255,255,255,.6)}
+.m-red{background:radial-gradient(circle at 35% 30%,#ffb1a6,#e0594d 55%,#a93d33)}
+.m-yellow{background:radial-gradient(circle at 35% 30%,#fff1b8,#f0cf79 55%,#c29a2e)}
+.m-denim{background:radial-gradient(circle at 35% 30%,#9fc1e8,#35557f 55%,#1f3857)}
+.m-pink{background:radial-gradient(circle at 35% 30%,#ffd1e0,#e8799f 55%,#b24d73)}
+/* re-tuned stickers to fit around the photos */
+.ticket{left:6%;top:21.5%;width:23%;font-size:4.2cqw;padding:1.2cqw 1.6cqw;border-right-width:1.6cqw}.ticket small{font-size:3cqw}
+.heart{left:73%;top:22%;width:13cqw;height:12.5cqw;font-size:3.6cqw;rotate:12deg}
+.e1{left:76%;top:41%;right:auto;font-size:9cqw}.e2{left:74%;top:58%;font-size:9cqw;rotate:-12deg}.e3{left:76%;top:76%;font-size:8.5cqw}
+.pocket-d{left:36%;top:90.5%;width:28%;height:13cqw;font-size:5cqw;padding-top:1.4cqw}.pocket-d small{font-size:3.6cqw}
