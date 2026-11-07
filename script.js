@@ -122,79 +122,105 @@ function closeModals() { document.querySelectorAll('.modal.show').forEach((m) =>
 document.querySelectorAll('.modal').forEach((m) => m.addEventListener('click', (e) => { if (e.target === m || e.target.hasAttribute('data-close')) closeModals(); }));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });
 
-/* ================= MAP: CHURCH -> THIRDY'S =================
-   Put the REAL details here. Each leg = one street (name + direction text + points on the 400x260 map).
-   The "Live map" tab uses the two search queries below to show real Google directions. */
+/* ================= MAP: CHURCH -> THIRDY'S (real streets from OpenStreetMap) =================
+   Set the REAL places here: either "queries" (name/address) or exact lat/lng
+   (Google Maps: right-click the spot -> click the coordinates to copy them). */
 const PLACES = {
-  church: { name: 'CHURCH', query: '' },                       // e.g. 'Your Church Name, Street, Davao City'
-  thirdys: { name: "THIRDY'S", query: "Thirdy's Food Haus Davao City" },
+  church:  { name: 'CHURCH',   queries: [], lat: null, lng: null },
+  thirdys: { name: "THIRDY'S", queries: ["Thirdy's Food Haus, Davao City", 'Fatima Street, Agdao, Davao City'], lat: null, lng: null },
 };
-const ROUTE = [
-  { street: 'Church exit', text: 'Leave the CHURCH and head to the main road', pts: [[50, 215], [110, 190]] },
-  { street: 'Main road', text: 'Go straight along the main road', pts: [[110, 190], [110, 95]] },
-  { street: 'Cross street', text: 'Turn right and keep going', pts: [[110, 95], [300, 95]] },
-  { street: "Thirdy's street", text: "Turn left — THIRDY'S Food Haus is ahead", pts: [[300, 95], [300, 40], [350, 40]] },
-];
-const NS = 'http://www.w3.org/2000/svg';
-const mk = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
-let fullPath, cum = [], total = 0;
-function buildMap() {
-  const legs = $('legs'), pins = $('pins'); legs.innerHTML = ''; pins.innerHTML = ''; cum = []; total = 0;
-  const pts = []; ROUTE.forEach((l) => l.pts.forEach((p, i) => { if (!pts.length || i > 0) pts.push(p); }));
-  const d = 'M' + pts.map((p) => p.join(' ')).join(' L');
-  const st = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
-  mk('path', { ...st, d, stroke: '#35557f', 'stroke-opacity': 0.18, 'stroke-width': 8 }, legs);
-  fullPath = mk('path', { ...st, d, stroke: '#e0594d', 'stroke-width': 5 }, legs);
-  ROUTE.forEach((l, i) => {
-    const ld = 'M' + l.pts.map((p) => p.join(' ')).join(' L');
-    const p = mk('path', { id: 'leg' + i, d: ld, fill: 'none' }, legs);
-    total += p.getTotalLength(); cum.push(total);
-    const t = mk('text', { class: 'slabel', dy: -7 }, legs);
-    const tp = mk('textPath', { href: '#leg' + i, startOffset: '50%', 'text-anchor': 'middle' }, t); tp.textContent = l.street;
-  });
-  const a = pts[0], b = pts[pts.length - 1];
-  [[a, '⛪', PLACES.church.name, '#35557f', 24], [b, '🍽️', PLACES.thirdys.name, '#e0594d', -14]].forEach(([p, ic, nm, col, dy]) => {
-    const e = mk('text', { x: p[0], y: p[1] + 8, 'font-size': 22, 'text-anchor': 'middle' }, pins); e.textContent = ic;
-    const w = nm.length * 6.4 + 14;
-    mk('rect', { x: p[0] - w / 2, y: p[1] + dy - (dy > 0 ? 0 : 12) + (dy > 0 ? 0 : 0), width: w, height: 16, rx: 8, fill: col }, pins);
-    const tx = mk('text', { class: 'pin-l', x: p[0], y: p[1] + dy - (dy > 0 ? 0 : 12) + 11.5, 'text-anchor': 'middle' }, pins); tx.textContent = nm;
-  });
-  $('steps').innerHTML = ROUTE.map((l) => `<li>${l.text} · <b>${l.street}</b></li>`).join('');
+let map, line, car, markers = [], mode = 'car', route = null, runId = 0;
+const geoCache = {};
+async function geocode(p) {
+  if (p.lat != null && p.lng != null) return [p.lat, p.lng];
+  for (const q of p.queries) {
+    if (geoCache[q]) return geoCache[q];
+    try {
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ph&q=' + encodeURIComponent(q));
+      const d = await r.json();
+      if (d[0]) return (geoCache[q] = [+d[0].lat, +d[0].lon]);
+    } catch (e) { /* try next query */ }
+  }
+  return null;
+}
+const dist = (m) => (m >= 1000 ? (m / 1000).toFixed(1) + ' km' : Math.round(m) + ' m');
+const hav = (a, b) => {
+  const t = (x) => x * Math.PI / 180, s = Math.sin(t(b[0] - a[0]) / 2) ** 2 + Math.cos(t(a[0])) * Math.cos(t(b[0])) * Math.sin(t(b[1] - a[1]) / 2) ** 2;
+  return 12742000 * Math.asin(Math.sqrt(s));
+};
+const pin = (ll, emoji, label) => L.marker(ll, { icon: L.divIcon({ className: 'pinicon', html: `<div class="pin"><span>${emoji}</span><b>${label}</b></div>`, iconSize: [90, 56], iconAnchor: [45, 38] }) }).addTo(map);
+function stepText(s) {
+  const m = s.maneuver, name = s.name || 'the road', mod = (m.modifier || '').replace('slight ', 'bear ').replace('sharp ', 'sharp ');
+  if (m.type === 'depart') return `Head out on <b>${name}</b>`;
+  if (m.type === 'arrive') return `Arrive at <b>${PLACES.thirdys.name}</b>${s.name ? ' · ' + s.name : ''}`;
+  if (m.type === 'roundabout' || m.type === 'rotary') return `Take the roundabout onto <b>${name}</b>`;
+  if (['turn', 'end of road', 'fork', 'on ramp', 'off ramp'].includes(m.type) && mod && mod !== 'straight') return `Turn ${mod} onto <b>${name}</b>`;
+  return `Continue on <b>${name}</b>`;
+}
+function setNow(t) { $('nowOn').textContent = t; }
+async function showRoute() {
+  const my = ++runId; cancelAnimationFrame(raf); route = null; $('steps').innerHTML = '';
+  if (!window.L) { setNow('The map needs an internet connection. Use the buttons below to open Google Maps.'); return; }
+  if (!map) {
+    map = L.map('leaf').setView([7.0731, 125.6128], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap contributors' }).addTo(map);
+  }
+  setTimeout(() => map.invalidateSize(), 80);
+  [line, car, ...markers].forEach((l) => l && map.removeLayer(l)); line = car = null; markers = [];
+  setNow('Finding the route…');
+  const [a, b] = await Promise.all([geocode(PLACES.church), geocode(PLACES.thirdys)]);
+  if (my !== runId) return;
+  if (b) markers.push(pin(b, '🍽️', PLACES.thirdys.name)); if (a) markers.push(pin(a, '⛪', PLACES.church.name));
+  if (!b) { setNow("Couldn't find Thirdy's on the map. Use the buttons below."); return; }
+  if (!a) { map.setView(b, 16); setNow("Thirdy's Food Haus is marked on the map. Tap the buttons below for directions."); return; }
+  map.fitBounds([a, b], { padding: [50, 50] });
+  let data = null;
+  try {
+    const svc = mode === 'car' ? 'routed-car' : 'routed-foot';
+    const r = await fetch(`https://routing.openstreetmap.de/${svc}/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=full&geometries=geojson&steps=true`);
+    data = await r.json();
+  } catch (e) { /* handled below */ }
+  if (my !== runId) return;
+  if (!data || !data.routes || !data.routes[0]) { setNow("Couldn't load the route right now. Use the buttons below for directions."); return; }
+  const rt = data.routes[0], coords = rt.geometry.coordinates.map((c) => [c[1], c[0]]), steps = rt.legs[0].steps;
+  const cum = [0]; for (let i = 1; i < coords.length; i++) cum.push(cum[i - 1] + hav(coords[i - 1], coords[i]));
+  const total = cum[cum.length - 1] || 1, sum = steps.reduce((s, x) => s + x.distance, 0) || 1; let acc = 0;
+  const ends = steps.map((s) => (acc += s.distance, acc / sum * total));
+  route = { coords, cum, total, steps, ends };
+  $('steps').innerHTML = steps.map((s) => `<li>${stepText(s)} <small>${s.distance ? '· ' + dist(s.distance) : ''}</small></li>`).join('');
+  playRoute();
 }
 function playRoute() {
-  const dot = $('dot'), arrow = $('arrow'), len = fullPath.getTotalLength(), items = [...$('steps').children];
-  const dur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 10 : 7000;
-  fullPath.style.strokeDasharray = len; fullPath.style.strokeDashoffset = len;
-  cancelAnimationFrame(raf); let t0 = null;
+  if (!route) { showRoute(); return; }
+  cancelAnimationFrame(raf);
+  const { coords, cum, total, steps, ends } = route, items = [...$('steps').children];
+  [line, car].forEach((l) => l && map.removeLayer(l));
+  line = L.polyline([coords[0]], { color: '#e0594d', weight: 6, opacity: 0.9 }).addTo(map);
+  car = L.marker(coords[0], { zIndexOffset: 1000, icon: L.divIcon({ className: 'pinicon', html: `<div class="car">${mode === 'car' ? '🚗' : '🚶'}</div>`, iconSize: [34, 34], iconAnchor: [17, 17] }) }).addTo(map);
+  map.setView(coords[0], 16, { animate: false });
+  const dur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 10 : Math.min(16000, Math.max(7000, total * 4));
+  let t0 = null, seg = 0, last = -1;
   const step = (t) => {
     if (t0 === null) t0 = t;
-    const k = Math.min((t - t0) / dur, 1), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, L = len * e;
-    fullPath.style.strokeDashoffset = len - L;
-    const p = fullPath.getPointAtLength(L), q = fullPath.getPointAtLength(Math.min(L + 2, len));
-    dot.setAttribute('transform', `translate(${p.x},${p.y})`);
-    arrow.setAttribute('transform', `rotate(${Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI})`);
-    const idx = k >= 1 ? items.length : cum.findIndex((c) => L <= c);
-    items.forEach((li, i) => { li.className = i < idx ? 'done' : i === idx ? 'on' : ''; });
-    if (k < 1) raf = requestAnimationFrame(step);
+    const k = Math.min((t - t0) / dur, 1), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, d = total * e;
+    while (seg < cum.length - 2 && cum[seg + 1] < d) seg++;
+    const f = (d - cum[seg]) / ((cum[seg + 1] - cum[seg]) || 1), A = coords[seg], B = coords[seg + 1] || A;
+    const p = [A[0] + (B[0] - A[0]) * f, A[1] + (B[1] - A[1]) * f];
+    line.setLatLngs(coords.slice(0, seg + 1).concat([p])); car.setLatLng(p); map.panTo(p, { animate: false });
+    const idx = k >= 1 ? steps.length - 1 : Math.max(0, ends.findIndex((x) => d <= x));
+    if (idx !== last) {
+      last = idx; items.forEach((li, i) => { li.className = i < idx ? 'done' : i === idx ? 'on' : ''; });
+      setNow(idx === steps.length - 1 && k >= 1 ? `You’ve arrived at ${PLACES.thirdys.name}! 🍽️` : `Now on: ${steps[idx].name || 'the road'}`);
+      if (items[idx]) items[idx].scrollIntoView({ block: 'nearest' });
+    }
+    if (k < 1) raf = requestAnimationFrame(step); else { items.forEach((li) => { li.className = 'done'; }); map.fitBounds(line.getBounds(), { padding: [40, 40] }); }
   };
   raf = requestAnimationFrame(step);
 }
-function loadLive() {
-  const enc = encodeURIComponent, f = $('liveMap');
-  if (f.dataset.ready) return; f.dataset.ready = 1;
-  f.src = PLACES.church.query
-    ? `https://maps.google.com/maps?saddr=${enc(PLACES.church.query)}&daddr=${enc(PLACES.thirdys.query)}&output=embed`
-    : `https://maps.google.com/maps?q=${enc(PLACES.thirdys.query)}&output=embed`;
-  $('liveNote').textContent = 'Tap the Church / Thirdy’s buttons on the animated tab to open exact directions in Google Maps.';
-}
 document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => {
-  document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === b));
-  const live = b.dataset.tab === 'live';
-  $('tab-anim').classList.toggle('hidden', live); $('tab-live').classList.toggle('hidden', !live);
-  if (live) loadLive(); else playRoute();
+  document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === b)); mode = b.dataset.mode; sfx.pop(); showRoute();
 }));
-buildMap();
-$('mapBtn').addEventListener('click', () => { sfx.pop(); openModal('mapModal'); playRoute(); });
+$('mapBtn').addEventListener('click', () => { sfx.pop(); openModal('mapModal'); showRoute(); });
 $('replay').addEventListener('click', () => { sfx.pop(); playRoute(); });
 
 /* ================= MENU TWIST / PUSH ME / HINT ================= */
@@ -240,8 +266,11 @@ function press(k) {
     if (/ [+−×÷] $/.test(expr)) expr = expr.replace(/ [+−×÷] $/, ` ${sym(k)} `); else expr += ` ${sym(k)} `;
     prev = +cur; op = k; reset = true; sfx.op();
   } else if (k === '=') {
-    if (op) { const r = compute(prev, +cur, op); cur = Number.isFinite(r) ? fmt(r) : 'Error'; prev = null; op = null; }
-    expr = expr.replace(/ [+−×÷] $/, '') + ' ='; reset = true; justEq = true; sfx.eq(); check19();
+    if (justEq) { sfx.eq(); }
+    else {
+      if (op) { const r = compute(prev, +cur, op); cur = Number.isFinite(r) ? fmt(r) : 'Error'; prev = null; op = null; }
+      expr = (expr.replace(/ [+−×÷] $/, '') || cur) + ' = ' + cur; reset = true; justEq = true; sfx.eq(); check19();
+    }
   }
   show();
 }
