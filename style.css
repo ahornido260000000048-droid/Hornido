@@ -145,3 +145,51 @@ button.pill{animation:none}
 .heart{left:73%;top:22%;width:13cqw;height:12.5cqw;font-size:3.6cqw;rotate:12deg}
 .e1{left:76%;top:41%;right:auto;font-size:9cqw}.e2{left:74%;top:58%;font-size:9cqw;rotate:-12deg}.e3{left:76%;top:76%;font-size:8.5cqw}
 .pocket-d{left:36%;top:90.5%;width:28%;height:13cqw;font-size:5cqw;padding-top:1.4cqw}.pocket-d small{font-size:3.6cqw}
+
+/* ===== REALISTIC FRIDGE UPGRADE ===== */
+.bunting{display:block;width:min(440px,84vw);margin:2px auto 0}
+.floor-shadow{position:absolute;left:-6%;right:-6%;bottom:-8cqw;height:14cqw;z-index:-2;pointer-events:none;
+ background:radial-gradient(ellipse at 50% 40%,rgba(20,35,60,.45),transparent 70%)}
+.floor-shadow::after{content:"";position:absolute;left:-12%;right:-12%;top:-4cqw;height:22cqw;opacity:var(--o,0);transition:opacity .2s;
+ background:radial-gradient(ellipse at 40% 20%,rgba(255,250,200,.9),rgba(255,240,170,.35) 45%,transparent 72%)}
+.hinge{position:absolute;left:-1.6cqw;width:3.4cqw;height:9cqw;border-radius:1.2cqw;z-index:4;background:linear-gradient(90deg,#7b8790,#fff 45%,#aab4bd 75%,#6a757e);box-shadow:-1px 2px 4px rgba(0,0,0,.4)}
+.hinge::after{content:"";position:absolute;left:1.1cqw;top:1.6cqw;width:1cqw;height:1cqw;border-radius:50%;background:#555e66;box-shadow:0 4.2cqw 0 #555e66}
+.gasket{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
+ box-shadow:inset 0 0 0 1.4cqw #e4edf4,inset 0 0 0 2cqw #9db6c9,inset 0 0 3cqw 2.4cqw rgba(30,60,100,.28)}
+.light{opacity:var(--o,0);transition:opacity .15s}
+.inside{filter:brightness(calc(.55 + var(--o,0)*.45))}
+.cab::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(90deg,rgba(15,30,60,calc(.6*(1 - var(--o,0)))),transparent 45%)}
+.mist{position:absolute;left:0;right:0;bottom:0;height:45%;z-index:5;pointer-events:none;overflow:hidden;opacity:calc(var(--o,0)*.85)}
+.mist i{position:absolute;bottom:-20%;width:60%;height:60%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.85),transparent 68%);filter:blur(10px);animation:mist 5s ease-in-out infinite}
+.mist i:nth-child(1){left:-10%}.mist i:nth-child(2){left:25%;animation-delay:-1.4s}.mist i:nth-child(3){left:55%;animation-delay:-2.6s}.mist i:nth-child(4){left:15%;animation-delay:-3.7s;width:80%}
+@keyframes mist{0%{translate:0 0;opacity:0}30%{opacity:.9}100%{translate:6% -90%;opacity:0}}
+.gloss{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 28%,rgba(255,255,255,.4) 40%,rgba(255,255,255,.12) 48%,transparent 58%);translate:calc(var(--a,0)*-1.1%) 0}
+.door::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2.6cqw;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),rgba(20,60,110,.4))}
+.door{transition:none}
+.fridge.thump{animation:thump .4s ease-out}
+@keyframes thump{20%{transform:translateY(-1.2cqw) scale(1.006)}45%{transform:translateY(.5cqw)}100%{transform:none}}
+.confetti{position:absolute;top:8%;width:2.6cqw;height:1.4cqw;z-index:30;pointer-events:none;animation:conf 2.4s ease-out forwards}
+@keyframes conf{from{translate:0 0;rotate:0deg;opacity:1}to{translate:var(--dx) 110cqw;rotate:var(--rot);opacity:0}}
+.wrap3d{position:relative}
+.p2 img{rotate:180deg}
+.snd{position:fixed;right:12px;bottom:12px;z-index:60;width:46px;height:46px;border-radius:50%;background:var(--denim);color:#fff;font-size:1.2rem;box-shadow:var(--sh);outline:2px dashed var(--stitch);outline-offset:-4px}
+
+/* map */
+.mapbox{width:min(640px,100%)}
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+.tab{padding:.45em 1.1em;border-radius:999px;background:var(--sky);color:var(--denim);font-weight:700}.tab.on{background:var(--denim);color:#fff}
+.slabel{font:700 8.5px Quicksand,sans-serif;fill:#2a4569;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.pin-l{font:700 10px Quicksand,sans-serif;fill:#fff}
+.steps{margin:12px 0 0 22px;font-size:.88rem}.steps li{padding:3px 0;opacity:.5;transition:.3s}.steps li b{color:var(--denim)}
+.steps li.on{opacity:1;font-weight:700;color:var(--red)}.steps li.done{opacity:.85;color:#4a8a5c}.steps li.done::marker{content:"✓ "}
+#liveMap{width:100%;height:340px;border:3px solid var(--denim);border-radius:10px;background:var(--sky)}
+
+/* calculator: colorful keys + typed-expression line */
+.expr{min-height:1.4em;font:600 .95rem 'Courier New',monospace;color:#fff;text-align:right;padding:0 6px 6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;direction:rtl;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.keys .k,.keys .k.op,.keys .k.fn,.keys .k.eq{color:#2b2350;font-size:1.25rem;background:linear-gradient(hsl(var(--h,200) 95% 80%),hsl(var(--h,200) 88% 64%));box-shadow:0 4px 0 hsl(var(--h,200) 60% 38%),0 6px 8px rgba(0,0,0,.2)}
+.keys .k:active{transform:translateY(3px);box-shadow:0 1px 0 hsl(var(--h,200) 60% 38%)}
+.keys .k.flash{animation:flash .25s}
+@keyframes flash{50%{filter:brightness(1.35) saturate(1.3);scale:1.06}}
+.keys .k.eq{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+/* the door is a child of .fridge, so the 3D perspective must live here */
+.fridge{perspective:1800px}
