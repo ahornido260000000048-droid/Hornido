@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Fraunces:ital,wght@1,700;1,900&family=Caveat:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -101,22 +102,13 @@
   <div class="box mapbox">
     <button class="x" data-close aria-label="Close">✕</button>
     <h3 class="mt">Church → Thirdy’s</h3>
-    <div class="tabs"><button class="tab on" data-tab="anim">Animated route</button><button class="tab" data-tab="live">Live map</button></div>
-    <div id="tab-anim">
-      <svg id="map" viewBox="0 0 400 260" role="img" aria-label="Animated route from Church to Thirdy's">
-        <rect width="400" height="260" fill="#f6ecd4"/>
-        <g fill="#cfe2f1" stroke="#9fc1dc"><rect x="14" y="14" width="90" height="60" rx="8"/><rect x="130" y="20" width="70" height="50" rx="8"/><rect x="240" y="14" width="46" height="60" rx="8"/><rect x="20" y="110" width="80" height="50" rx="8"/><rect x="130" y="112" width="70" height="66" rx="8"/><rect x="230" y="112" width="60" height="66" rx="8"/><rect x="320" y="110" width="66" height="60" rx="8"/><rect x="140" y="200" width="60" height="46" rx="8"/><rect x="300" y="205" width="80" height="40" rx="8"/></g>
-        <g stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round"><path d="M10 95H390"/><path d="M110 8V252"/><path d="M215 110V252"/><path d="M10 190H390"/><path d="M300 8V190"/></g>
-        <g stroke="#e3cf9f" stroke-width="2" stroke-dasharray="6 6" fill="none"><path d="M10 95H390"/><path d="M110 8V252"/><path d="M215 110V252"/><path d="M10 190H390"/><path d="M300 8V190"/></g>
-        <g id="legs"></g><g id="pins"></g>
-        <g id="dot"><circle r="11" fill="#fff" stroke="#35557f" stroke-width="3"/><path id="arrow" d="M-6 -5L7 0L-6 5Z" fill="#e0594d"/></g>
-      </svg>
-      <ol class="steps" id="steps"></ol>
-      <div class="row"><button class="btn sm" id="replay">↻ Replay</button>
-        <a class="btn sm" href="https://share.google/ciGXyPBhJQUlRrDpL" target="_blank" rel="noopener">Church on Maps</a>
-        <a class="btn sm" href="https://share.google/K9NDfWIw8eDfbqlb9" target="_blank" rel="noopener">Thirdy’s on Maps</a></div>
-    </div>
-    <div id="tab-live" class="hidden"><iframe id="liveMap" title="Live Google map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><p class="note" id="liveNote"></p></div>
+    <div class="tabs"><button class="tab on" data-mode="car">🚗 Drive</button><button class="tab" data-mode="foot">🚶 Walk</button></div>
+    <div class="banner" id="nowOn">Finding the route…</div>
+    <div id="leaf"></div>
+    <ol class="steps" id="steps"></ol>
+    <div class="row"><button class="btn sm" id="replay">↻ Replay</button>
+      <a class="btn sm" href="https://share.google/ciGXyPBhJQUlRrDpL" target="_blank" rel="noopener">Church on Maps</a>
+      <a class="btn sm" href="https://share.google/K9NDfWIw8eDfbqlb9" target="_blank" rel="noopener">Thirdy’s on Maps</a></div>
   </div>
 </div>
 
@@ -142,6 +134,7 @@
 
 <button class="snd" id="snd" aria-label="Toggle sound">🔊</button>
 <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
